@@ -10,6 +10,6 @@ public class GameUI : MonoBehaviour
 
     public void UpdateTimerUI(float time)
     {
-        timerCountDown.text = math.floor(time / 60) + ":" + (time % 60);
+        timerCountDown.text = math.floor(time/60) + ":" + (time % 60);
     }
 }

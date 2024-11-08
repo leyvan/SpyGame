@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,19 +7,27 @@ public class LevelManager : MonoBehaviour
 {
     private GameTimer gameTimer;
     private bool countdownStarted;
-    
-    // Start is called before the first frame update
+
+    [SerializeField] private GameUI gameUI;
+    [SerializeField] private WorldspaceUI worldspaceUI;
+
     void Start()
     {
-        
+        StartGame();    
     }
 
+    private void StartGame()
+    {
+        gameTimer = new GameTimer(this, 900, 0);
+        countdownStarted = true;
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire2") && !countdownStarted)
+        if (countdownStarted)
         {
-            gameTimer = new GameTimer(this, 900, 0);
+            gameUI.UpdateTimerUI(gameTimer.GetTimeElapsed());
+            worldspaceUI.UpdateTimerUI(gameTimer.GetTimeElapsed());
         }
     }
 }

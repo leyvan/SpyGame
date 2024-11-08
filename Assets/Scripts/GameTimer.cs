@@ -6,16 +6,12 @@ public class GameTimer
 {
     private float _timeToStart;
     private float _timeToEnd;
-    
     private float _timeElapsed;
-    
-    
     
     public GameTimer(MonoBehaviour myMonoBehaviour, float timeToStart, float timeToEnd)
     {
         _timeToStart = timeToStart;
         _timeToEnd = timeToEnd;
-
         _timeElapsed = timeToStart;
 
         myMonoBehaviour.StartCoroutine(CountDown());
@@ -29,7 +25,8 @@ public class GameTimer
             Debug.Log("TIMER: " + _timeElapsed);
             yield return new WaitForSeconds(1);
         }
-        
-        
     }
+    
+    public float GetTimeElapsed()
+    {return _timeElapsed;}
 }
