@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Cinemachine;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -21,10 +22,16 @@ public class Player_Movement : MonoBehaviour
     
     CharacterController pCharacterController;
     public Transform playerCamera;
+    [SerializeField] private CinemachineVirtualCamera vcam;
+    
+    public bool canMove = true;
     
     // Start is called before the first frame update
     void Start()
     {
+        GameEvents.Instance.onPause += ToggleMovement;
+        GameEvents.Instance.onCameraLock += CameraLock;
+        
         TryGetComponent(out pCharacterController);
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -32,10 +39,11 @@ public class Player_Movement : MonoBehaviour
         playerCamera = Camera.main.transform;
         moveSpeed = walkSpeed;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+        if(canMove == false) return;
         CheckInput();
 
         if (inputDirection.magnitude >= 0.1f)
@@ -43,6 +51,15 @@ public class Player_Movement : MonoBehaviour
             ApplyMovement();
         }
     }
+
+    private void ToggleMovement(bool paused)
+    {
+        MovementLock(!paused);
+        CameraLock(!paused);
+    }
+
+    private void MovementLock(bool lockState) => canMove = lockState;
+    private void CameraLock(bool lockState) => vcam.enabled = lockState;
 
     private void CheckInput()
     {

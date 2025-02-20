@@ -8,29 +8,17 @@ public class Rotatable : MonoBehaviour
     private bool canRotate = false;
 
     private float rotateSpeed = 90;
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("r") && canRotate && !_isRotating)
-        {
-            _isRotating = true;
+    public float horizontalSpeed = 2.0F;
+    public float verticalSpeed = 2.0F;
+    void Update() {
+        if (canRotate) {
+            float h = horizontalSpeed * Input.GetAxis("Mouse X");
+            float v = verticalSpeed * Input.GetAxis("Mouse Y");
+            transform.Rotate(v, h, 0);
         }
-
-        if (Input.GetKeyUp("r"))
-        {
-            _isRotating = false;
-        }
-
-        if (_isRotating)
-        {
-            transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0f, 0f));
-        }
-            
     }
-
-    public void StartRotating()
+    public void ToggleRotating(bool shouldRotate)
     {
-        canRotate = true;
+        canRotate = shouldRotate;
     }
 }
